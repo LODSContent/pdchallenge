@@ -3,7 +3,7 @@
 #def getConnection(host, port, database, user, password):
 
 
-#def retrieveCustomerById(conn, customerNumber):
+#def retrieveCustomerByNumber(conn, customerNumber):
 
 
 #def retrieveCustomersByState(con,state):

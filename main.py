@@ -1,6 +1,7 @@
 import mysql.connector
 import sys
 import mysqlCode
+import json
 
 #Read in the test #.
 test = 0
@@ -20,11 +21,14 @@ if noTest:
 
 
 #Set up globals
-host = "seadocker02.learnondemandsystems.com"
-port = "49154"
+
+with open('settings.json') as sFile:
+    settings = json.load(sFile)
+host = settings["host"]
+port = settings["port"]
 database = "classicmodels"
-user="root"
-password="Passw0rd!"
+user=settings["user"]
+password=settings["password"]
 
 productlineName="Graphene Cars"
 productlineDescription="Graphene Cars are literally made of the strongest material we can get our hands on."
@@ -55,7 +59,9 @@ if test == 1: # Test the connection
     except Exception as ex:
         print("There was an error connecting to the database:\n{}".format(ex))
 
-if test == 2: # Test the connection
+
+# Test data retrieval
+if test == 2: 
     try:
         conn = mysqlCode.getConnection(host, port, database, user, password)
         customerNumber = 175
@@ -121,25 +127,48 @@ if test == 3: # Test the data modification
     except Exception as ex:
         print("There was an error connecting to the database:\n{}".format(ex))
 
-if test == 4: # Test the exception handling
+# Test the exception handling
+if test == 4: 
+    #Connection exception check
     try:
-        conn = mysqlCode.getConnection(host, port, database, 'bob', password)
-        if type(conn) != int:
-            print("You have not handled the mysql.connector.InterfaceError exception.")
-        elif conn != -1:
+        output = mysqlCode.getConnection(host, port, database, 'bob', password)
+        if output is not None:
             print("You have not handled the mysql.connector.InterfaceError exception.")
         else:
             print("You have successfully handled the mysql.connector.InterfaceError exception.")
     except mysql.connector.errors.ProgrammingError as connEx:
-        print("There is an unhandled connection error:\n{}".format(connEx))
+        print("There is an unhandled Programming error in the getConnection function: {}".format(connEx))
     except Exception as ex:
-        print("There was an unhandled error:\n{}".format(ex))
+        print("There was an unhandled error in the getConnection function:\n{}".format(ex))
+
+    #Data retrieval exception check
     try:
         conn = mysqlCode.getConnection(host, port, database, user, password)
-        rowCount = mysqlCode.insertProductLine(conn, productlineName, productlineDescription)
-        rowCount = mysqlCode.insertProductLine(conn, productlineName, productlineDescription)
+        customerNumber = 'Bad'
+        testCustomerName = "Gift Depot Inc."
+        output = mysqlCode.retrieveCustomerByNumber(conn, customerNumber)
+        if output is not None:
+            print("You have not handled an empty result properly.")
+        else:
+            print("You have successfully handled an empty result.")
+    except Exception as ex:
+        print("There was an unhandled error in the retrieveCustomerByNumber function:\n{}".format(ex))
+    
+    #Integrity exception check
+    try:
+        conn = mysqlCode.getConnection(host, port, database, user, password)
+        output = mysqlCode.insertProductLine(conn, productlineName, productlineDescription)
+        output = mysqlCode.insertProductLine(conn, productlineName, productlineDescription)
+        if output is not None:
+            print("You have not handled the mysql.connector.IntegrityError exception.")
+        else:
+            print("You have successfully handled the mysql.connector.IntegrityError exception.")
+    except mysql.connector.errors.IntegrityError as inEx:
+        print("There is an unhandled integrity error:\n{}".format(inEx))
     except mysql.connector.errors.InterfaceError as iEx:
-        print("There is an unhandled data integrity error:\n{}".format(iEx))
-    #except Exception as ex:
-    #    print("There was an unhandled error:\n{}".format(ex))
+        print("There is an unhandled interface error:\n{}".format(iEx))
+    except mysql.connector.errors.ProgrammingError as pEx:
+        print("There is an unhandled programming error:\n{}".format(pEx))
+    except Exception as ex:
+        print("There was an unhandled error:\n{}".format(ex))
 

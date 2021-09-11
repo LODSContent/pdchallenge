@@ -30,6 +30,7 @@ database = "classicmodels"
 user=settings["user"]
 password=settings["password"]
 
+#Code for testing insert, update and delete
 productlineName="Graphene Cars"
 productlineDescription="Graphene Cars are literally made of the strongest material we can get our hands on."
 productlineHtmlDescription="<div class'productline'>Graphene Cars are literally <b>made of the strongest material we can get our hands on</b>.</div>"
@@ -47,7 +48,7 @@ def displayProductline(conn):
     csr.execute(sql)
     output = csr.fetchone()
     csr.close()
-    print("Product Line:\n\tName: {}\n\tDescription: {}\n\tHTML: {}\n\n".format(output.productLine, output.textDescription, output.htmlDescription))
+    print("Product Line:\n\tName: {}\n\tDescription: {}\n\tHTML: {}\n".format(output.productLine, output.textDescription, output.htmlDescription))
 
 if test == 1: # Test the connection
     try:

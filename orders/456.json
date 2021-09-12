@@ -1,0 +1,107 @@
+{
+  "customerNumber": 456,
+  "orders": [
+    {
+      "orderNumber": 10242,
+      "orderDate": "2004-04-20",
+      "requiredDate": "2004-04-28",
+      "shippedDate": "2004-04-25",
+      "status": "Shipped",
+      "comments": "Customer is interested in buying more Ferrari models",
+      "customerNumber": 456,
+      "details": [
+        {
+          "orderLineNumber": 1,
+          "productName": "1936 Mercedes Benz 500k Roadster",
+          "productCode": "S24_3969",
+          "priceEach": 36.52,
+          "quantityOrdered": 46,
+          "lineTotal": 1679.92
+        }
+      ]
+    },
+    {
+      "orderNumber": 10319,
+      "orderDate": "2004-11-03",
+      "requiredDate": "2004-11-11",
+      "shippedDate": "2004-11-06",
+      "status": "Shipped",
+      "comments": "Customer requested that DHL is used for this shipping",
+      "customerNumber": 456,
+      "details": [
+        {
+          "orderLineNumber": 1,
+          "productName": "1969 Dodge Super Bee",
+          "productCode": "S18_3278",
+          "priceEach": 77.19,
+          "quantityOrdered": 46,
+          "lineTotal": 3550.74
+        },
+        {
+          "orderLineNumber": 2,
+          "productName": "1961 Chevrolet Impala",
+          "productCode": "S24_4620",
+          "priceEach": 78.41,
+          "quantityOrdered": 43,
+          "lineTotal": 3371.63
+        },
+        {
+          "orderLineNumber": 3,
+          "productName": "1957 Corvette Convertible",
+          "productCode": "S18_4721",
+          "priceEach": 120.53,
+          "quantityOrdered": 45,
+          "lineTotal": 5423.85
+        },
+        {
+          "orderLineNumber": 4,
+          "productName": "1957 Vespa GS150",
+          "productCode": "S18_3782",
+          "priceEach": 54.71,
+          "quantityOrdered": 44,
+          "lineTotal": 2407.24
+        },
+        {
+          "orderLineNumber": 5,
+          "productName": "1982 Ducati 996 R",
+          "productCode": "S32_2206",
+          "priceEach": 35.0,
+          "quantityOrdered": 29,
+          "lineTotal": 1015.0
+        },
+        {
+          "orderLineNumber": 6,
+          "productName": "2002 Yamaha YZR M1",
+          "productCode": "S50_4713",
+          "priceEach": 79.73,
+          "quantityOrdered": 45,
+          "lineTotal": 3587.85
+        },
+        {
+          "orderLineNumber": 7,
+          "productName": "1982 Ducati 900 Monster",
+          "productCode": "S24_2360",
+          "priceEach": 65.8,
+          "quantityOrdered": 31,
+          "lineTotal": 2039.8
+        },
+        {
+          "orderLineNumber": 8,
+          "productName": "1974 Ducati 350 Mk3 Desmo",
+          "productCode": "S32_4485",
+          "priceEach": 96.95,
+          "quantityOrdered": 22,
+          "lineTotal": 2132.9
+        },
+        {
+          "orderLineNumber": 9,
+          "productName": "2002 Suzuki XREO",
+          "productCode": "S12_2823",
+          "priceEach": 134.05,
+          "quantityOrdered": 30,
+          "lineTotal": 4021.5
+        }
+      ]
+    }
+  ]
+}

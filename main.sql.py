@@ -1,4 +1,3 @@
-import mysql.connector
 import sys
 import mysqlCode
 import json
@@ -30,6 +29,15 @@ database = "classicmodels"
 user=settings["user"]
 password=settings["password"]
 
+# Manage results files
+def saveResults(file,object):
+    path = "/home/coder/challenge/results.{}.json".format(file)
+    fileName = "results.{}.json".format(file)
+    with open(path) as f:
+        json.dump(object,f,indent=2)
+    print("To view the results, open the {} file ".format(fileName))
+
+
 #Code for testing insert, update and delete
 productlineName="Graphene Cars"
 productlineDescription="Graphene Cars are literally made of the strongest material we can get our hands on."
@@ -42,13 +50,13 @@ def clearProductline(conn):
     conn.commit()
     csr.close()
 
-def displayProductline(conn):
+def getProductline(conn):
     sql = "SELECT * FROM productlines WHERE productLine = '{}'".format(productlineName)
     csr = conn.cursor(named_tuple=True)
     csr.execute(sql)
     output = csr.fetchone()
     csr.close()
-    print("Product Line:\n\tName: {}\n\tDescription: {}\n\tHTML: {}\n".format(output.productLine, output.textDescription, output.htmlDescription))
+    return output
 
 if test == 1: # Test the connection
     try:
@@ -84,9 +92,8 @@ if test == 2:
             elif len(customers)!=6:
                 print("The retrieveCustomersByState function retrieved the wrong # of customers.")
             else:
-                print("You have retrieved the correct customer records:")
-                for customer in customers:
-                    print("\t{}".format(customer))
+                print("You have retrieved the correct customer records")
+                saveResults("customersByState", customers)                
         except Exception as exData:
             print("There was an error retrieving data:\n{}".format(exData))
     except Exception as ex:
@@ -102,14 +109,14 @@ if test == 3: # Test the data modification
             rowCount = mysqlCode.insertProductLine(conn, productlineName, productlineDescription)
             if rowCount == 1:
                 print("You have properly inserted a product line record.")
-                displayProductline(conn)
+                saveResults("insert",getProductline(conn))
             else:
                 print("You have not properly inserted a product line record")
 
             rowCount = mysqlCode.updateProductLine(conn, productlineName, productlineHtmlDescription)
             if rowCount == 1:
                 print("You have properly updated a product line record.")
-                displayProductline(conn)
+                saveResults("update",getProductline(conn))
             elif rowCount > 1:
                 print("You have updated too many product line records. You updated {} records".format(rowCount))
             else:
@@ -137,8 +144,6 @@ if test == 4:
             print("You have not handled the mysql.connector.InterfaceError exception.")
         else:
             print("You have successfully handled the mysql.connector.InterfaceError exception.")
-    except mysql.connector.errors.ProgrammingError as connEx:
-        print("There is an unhandled Programming error in the getConnection function: {}".format(connEx))
     except Exception as ex:
         print("There was an unhandled error in the getConnection function:\n{}".format(ex))
 
@@ -164,12 +169,6 @@ if test == 4:
             print("You have not handled the mysql.connector.IntegrityError exception.")
         else:
             print("You have successfully handled the mysql.connector.IntegrityError exception.")
-    except mysql.connector.errors.IntegrityError as inEx:
-        print("There is an unhandled integrity error:\n{}".format(inEx))
-    except mysql.connector.errors.InterfaceError as iEx:
-        print("There is an unhandled interface error:\n{}".format(iEx))
-    except mysql.connector.errors.ProgrammingError as pEx:
-        print("There is an unhandled programming error:\n{}".format(pEx))
     except Exception as ex:
         print("There was an unhandled error:\n{}".format(ex))
 

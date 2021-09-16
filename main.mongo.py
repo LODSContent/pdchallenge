@@ -32,15 +32,12 @@ password=settings["password"]
 collection = "orders"
 
 # Manage results files
-def clearResultsFiles():
-    os.system('rm /home/coder/results.*.json')
-
 def saveResults(file,object):
     path = "/home/coder/challenge/results.{}.json".format(file)
-    fileName = "results.{}.json"
+    fileName = "results.{}.json".format(file)
     with open(path) as f:
         json.dump(object,f,indent=2)
-    print("To view the results, open the {} file.".format(fileName))
+    print("To view the results, open the {} file ".format(fileName))
 
 #Set up test data
 
@@ -108,8 +105,6 @@ def generateTestData():
         ]               
     }
     return (customer,order)
-
-clearResultsFiles()
 
 if test == 1: # Test the connection
     try:

@@ -21,12 +21,12 @@ def deleteProductLine(conn, productLine):
 
 
 #Test your code directly by adding test code here and running python3 mysqlCode.py
-if __name__ == "__main__":
-    with open('settings.json') as sFile:
-        settings = json.load(sFile)
-    host = settings["host"]
-    port = settings["port"]
-    database = settings["database"]
-    user=settings["user"]
-    password=settings["password"]
-    collection = "orders"
+#if __name__ == "__main__":
+#    with open('settings.json') as sFile:
+#        settings = json.load(sFile)
+#    host = settings["sqlHost"]
+#    port = settings["sqlPort"]
+#    database = settings["database"]
+#    user=settings["user"]
+#    password=settings["password"]
+#    collection = "orders"

@@ -35,7 +35,7 @@ collection = "orders"
 def saveResults(file,object):
     path = "/home/coder/challenge/results.{}.json".format(file)
     fileName = "results.{}.json".format(file)
-    with open(path) as f:
+    with open(path,"w") as f:
         json.dump(object,f,indent=2)
     print("To view the results, open the {} file ".format(fileName))
 

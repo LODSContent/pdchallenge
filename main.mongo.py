@@ -31,6 +31,16 @@ user=settings["user"]
 password=settings["password"]
 collection = "orders"
 
+# Manage results files
+def clearResultsFiles():
+    os.system('rm /home/coder/results.*.json')
+
+def saveResults(file,object):
+    path = "/home/coder/challenge/results.{}.json".format(file)
+    fileName = "results.{}.json"
+    with open(path) as f:
+        json.dump(object,f,indent=2)
+    print("To view the results, open the {} file.".format(fileName))
 
 #Set up test data
 
@@ -99,6 +109,7 @@ def generateTestData():
     }
     return (customer,order)
 
+clearResultsFiles()
 
 if test == 1: # Test the connection
     try:
@@ -119,12 +130,14 @@ if test == 2:
             customer = getCustomerOrders(coll,existingCustomerNumber)
 
             if customer is not None:
-                print("You have previously loaded the files into the collection. Here is the order data from the collection for customer {}:\n{}".format(existingCustomerNumber, json.dumps(customer, indent=2)))
+                print("You have previously loaded the files into the collection.")
+                saveResults("load",customer)
             else:
                 mongoCode.loadData(coll, path)
                 customer = getCustomerOrders(coll,existingCustomerNumber)
                 if customer is not None:
-                    print("You have successfully loaded the files into the collection. Here is the order data from the collection for customer {}:\n{}".format(existingCustomerNumber, json.dumps(customer, indent=2)))
+                    print("You have successfully loaded the files into the collection. Here is the order data from the collection for customer {}:\n{}")
+                    saveResults("load",customer)
                 else:
                     print("You have not successfully loaded the customer order files into the collection.")
         except Exception as exData:
@@ -139,18 +152,16 @@ if test == 3:
         try:
             customer = mongoCode.getCustomerOrders(coll,existingCustomerNumber)
             if customer is not None:
-                print("You have successfully returned a document from the collection. View the results.customerNumber.json file for the results")
-                with open("/home/coder/challenge/results.customerNumber.json","w") as o:
-                    json.dump(customer,o, indent=2)
+                print("You have successfully returned a document from the collection")
+                saveResults("customerOders",customer)
             else:
                 print("You have not successfully returned a document from the collection.")
 
             documents = mongoCode.getProductOrders(coll, productCode)
             if documents is not None:
                 if len(documents) == 18:
-                    print("You have successfully retrieved documents with the productCode filter. View the results.productCode.json file for the results.")
-                    with open("/home/coder/challenge/results.productCode.json","w") as o:
-                        json.dump(documents,o, indent=2)
+                    print("You have successfully retrieved documents with the productCode filter.")
+                    saveResults("productCode",documents)
                 else:
                     issue = "too few" if len(documents) < 18 else "too many"
                     print("You have not filtered the documnents based on the productCode properly. You have returned {} results.".format(issue))
@@ -165,9 +176,8 @@ if test == 3:
             elif "total" not in orderTotals[0]:
                 print("You did not return the correct data with the order totals")
             else:
-                print("You have returned the correct order totals. View the results.orderTotals.json file to view the results.")
-                with open("/home/coder/challenge/results.orderTotals.json","w") as o:
-                    json.dump(orderTotals,o, indent=2)               
+                print("You have returned the correct order totals.")
+                saveResults("orderTotals",orderTotals)
         except Exception as exData:
             print("There was an error while verifying the data:\n{}".format(exData))
     except Exception as ex:
@@ -183,17 +193,15 @@ if test==4:
     if customer is None:
         print("A document was not added to collection.")
     else:
-        print("A document was added to the collection. You can view the customer order document that was added in the results.insertCustomer.json file.")
-        with open("/home/coder/challenge/results.insertCustomer.json","w") as o:
-            json.dump(customer,o, indent=2)               
+        print("A document was added to the collection.")
+        saveResults("insertCustomer",customer)
         mongoCode.addCustomerOrder(coll, newCustomerNumber, order)
         customer = getCustomerOrders(coll, newCustomerNumber)
         if len(customer["orders"]) != 2:
             print("You did not add an order to the customer orders document.")
         else:
-            print("You successfully added an order to the customer orders document. You can view the resulting customer record in the results.addOrder.json file.")
-            with open("/home/coder/challenge/results.addOrder.json","w") as o:
-                json.dump(customer,o, indent=2)               
+            print("You successfully added an order to the customer orders document.")
+            saveResults("addOrder",customer)
         mongoCode.removeCustomerOrders(coll, newCustomerNumber)
         customer = getCustomerOrders(coll, newCustomerNumber)
         if customer is not None:

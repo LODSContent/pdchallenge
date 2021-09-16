@@ -24,8 +24,8 @@ if noTest:
 
 with open('settings.json') as sFile:
     settings = json.load(sFile)
-host = settings["host"]
-port = settings["port"]
+host = settings["sqlHost"]
+port = settings["sqlPort"]
 database = "classicmodels"
 user=settings["user"]
 password=settings["password"]

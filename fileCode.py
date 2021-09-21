@@ -11,6 +11,9 @@ def readProducts(dataPath,orderFilePrefix):
 
 
 
-def reportTopOrders(dataPath, transactionFileName):
+def generateOrdersReport(dataPath):
     return 0
 
+
+def processMonthlyOrders(monthlyOrders):
+    return 0

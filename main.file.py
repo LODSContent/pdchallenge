@@ -39,9 +39,13 @@ if test == 1:
         fileName = "customer.json"
         customer = fileCode.readCustomer(dataPath,fileName)
         if type(customer) != dict:
-            print("You have not returned a dictionary object")
+            print("You have not returned a dictionary object.")
         elif "customerName" not in customer:
-            print("You have not returned the correct customer data")
+            print("You have not returned the correct customer data.")
+        elif "processCenter" not in customer:
+            print("You have not added the processCenter element to the customer data.")
+        elif customer["processCenter"] != "LODS":
+            print("the processCenter element did not have the correct data.")
         else:
             print("You have returned a dictionary object containing customer data.")
     except Exception as ex:

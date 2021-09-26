@@ -7924,11 +7924,12 @@ insert  into `products`(`productCode`,`productName`,`productLine`,`productScale`
 
 ('S72_3212','Pont Yacht','Ships','1:72','Unimax Art Galleries','Measures 38 inches Long x 33 3/4 inches High. Includes a stand.\r\nMany extras including rigging, long boats, pilot house, anchors, etc. Comes with 2 masts, all square-rigged',414,'33.30','54.60');
 
-CREATE USER 'reader' IDENTIFIED BY 'Passw0rd!';
-CREATE USER 'writer' IDENTIFIED BY 'Passw0rd!';
-GRANT SELECT ON classicmodels.* TO 'reader';
-GRANT INSERT, UPDATE, DELETE ON classicmodels.* TO 'writer';
-
+IF (SELECT COUNT(*) FROM mysql.users WHERE User = 'reader') = 0 THEN
+  CREATE USER 'reader' IDENTIFIED BY 'Passw0rd!';
+  CREATE USER 'writer' IDENTIFIED BY 'Passw0rd!';
+  GRANT SELECT ON classicmodels.* TO 'reader';
+  GRANT INSERT, UPDATE, DELETE ON classicmodels.* TO 'writer';
+END IF;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

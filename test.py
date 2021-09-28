@@ -10,13 +10,17 @@ import reportCode
 #Set up test control
 resultCode = 0
 test = "0"
+debug = False
 
 if len(sys.argv) > 1:
     test = sys.argv[1]
 
+if "--debug" in sys.argv:
+    debug = True
 nullPrint = open('/dev/null','w')
 stdPrint = sys.stdout
-sys.stdout = nullPrint
+if debug == False:
+    sys.stdout = nullPrint
 
 resultCode = 1
 
@@ -96,11 +100,11 @@ def getOrderDetails(conn):
 def getCustomerOrders(collection,customerNumber):
     return collection.find_one({"_id":customerNumber})
 
-
 #Execute tests
 try:
     if test == "1a":
         conn = modifyCustomerCode.getConnection(sqlHost, sqlPort, database, user, password)
+        print(conn)
         if conn.database == database:
             resultCode = 0
     elif test =="1b":
@@ -118,7 +122,10 @@ try:
         rowCount = modifyCustomerCode.insertOrder(conn,testOrder)
         rowCount = modifyCustomerCode.insertDetails(conn,testDetails)
         verify = getOrderDetails(conn)
+        print(verify)
         if verify is None:
+            resultCode = 1
+        elif len(verify) == 0:
             resultCode = 1
         else:
             resultCode = 0
@@ -182,6 +189,7 @@ try:
         testOrder["orderDate"] = str(testOrder["orderDate"] )
         testOrder["requiredDate"] = str(testOrder["requiredDate"] )
         testOrder["shippedDate"] = str(testOrder["shippedDate"] )
+        print(testOrder)
         importCode.addCustomerOrder(collection,customerNumber, testOrder)
         document = getCustomerOrders(collection, customerNumber)
         if len(document["orders"]) != 5:
@@ -222,7 +230,10 @@ try:
         resultCode = 0
     elif test =="4c":
         resultCode = 0
-except:
+except Exception as ex:
+    print(ex)
     resultCode = -100
+
+sys.stdout = stdPrint
 
 print(resultCode)

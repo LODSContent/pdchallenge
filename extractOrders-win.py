@@ -44,6 +44,6 @@ for customer in customers:
         csrDet.close()
     if len(orders) > 0:
         customer["orders"]=orders
-        with open("/home/coder/challenge/orders/{}.json".format(customer["customerNumber"]),"w") as o:
+        with open("d:/labfiles/orders/{}.json".format(customer["customerNumber"]),"w") as o:
             o.write(json.dumps(customer, indent=2))
 conn.close()

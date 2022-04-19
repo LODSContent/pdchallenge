@@ -1,3 +1,4 @@
 settings.json
 data/*
 extractOrders.local.py
+__pycache__/fileCode.cpython-39.pyc
